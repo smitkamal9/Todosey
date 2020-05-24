@@ -9,7 +9,7 @@
 import UIKit
 import RealmSwift
 
-class TodoListViewController: UITableViewController {
+class TodoListViewController: SwipeTableViewController  {
     
     @IBOutlet weak var searchBar: UISearchBar!
     
@@ -28,8 +28,8 @@ class TodoListViewController: UITableViewController {
         super.viewDidLoad()
         //print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
         //File path to the document folder
-        //        searchBar.delegate = self
-        //        loadData()
+        
+        searchBar.delegate = self
     }
     
     //MARK - Table View Data Source
@@ -40,7 +40,7 @@ class TodoListViewController: UITableViewController {
     
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoItemCell", for: indexPath)
+        let cell = super.tableView(tableView, cellForRowAt: indexPath)
         if let item = itemArray?[indexPath.row] {
             cell.textLabel?.text = item.title
             cell.accessoryType = item.done ? .checkmark : .none
@@ -51,20 +51,15 @@ class TodoListViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //        itemArray[indexPath.row].done = !itemArray[indexPath.row].done
-        //        self.saveItems()
-        //        //tableView.reloadData()
+ 
         if let selectedItem = itemArray?[indexPath.row]{
-            
             do{
                 try realm.write{
                     selectedItem.done = !selectedItem.done
                 }}catch{
                     print("Error changing status, Error:\(error)")
             }
-            
         }
-        
         tableView.reloadData()
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -94,7 +89,6 @@ class TodoListViewController: UITableViewController {
         }
         alert.addTextField { (alertTextField) in
             alertTextField.placeholder = "Create New Item"
-            print("Hello")
             textField  = alertTextField
         }
         alert.addAction(action)
@@ -104,29 +98,38 @@ class TodoListViewController: UITableViewController {
     
     
     func loadData()  {
-        itemArray = selectedCategory?.items.sorted(byKeyPath:"title", ascending: true)
+        itemArray = selectedCategory?.items.sorted(byKeyPath:"date", ascending: false)
         tableView.reloadData()
     }
     
-    
+    override func updateModel(at indexPath: IndexPath) {
+        if let selectedItem = self.itemArray?[indexPath.row]{
+            do{
+                try self.realm.write{
+                    self.realm.delete(selectedItem)
+                }
+            }catch{
+                print("Error deleting category. Error: \(error)")
+            }
+        }
+        
+    }
     
     
 }
 
-//extension TodoListViewController:UISearchBarDelegate{
-//    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-//        let request : NSFetchRequest<Item> = Item.fetchRequest()
-//        let predicate = NSPredicate(format: "title CONTAINS %@", searchBar.text!)
-//        request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
-//        loadData(with: request,predicate: predicate)
-//        //tableView.reloadData()
-//    }
-//
-//    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-//        if searchBar.text?.count == 0{
-//            DispatchQueue.main.async {
-//                self.loadData()
-//            }
-//        }
-//    }
-//}
+extension TodoListViewController:UISearchBarDelegate{
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        itemArray = itemArray?.filter("title CONTAINS[cd] %@",searchBar.text!).sorted(byKeyPath: "date", ascending: false)
+        
+        tableView.reloadData()
+    }
+
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBar.text?.count == 0{
+            DispatchQueue.main.async {
+                self.loadData()
+            }
+        }
+    }
+}
