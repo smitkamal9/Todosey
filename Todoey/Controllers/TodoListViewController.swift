@@ -32,6 +32,21 @@ class TodoListViewController: SwipeTableViewController  {
         
         searchBar.delegate = self
     }
+  
+    
+    override func viewWillAppear(_ animated: Bool) {
+        if let hexColor = selectedCategory?.categoryColor{
+            let categoryColor = UIColor(hexString: hexColor)
+            if let navbar = navigationController?.navigationBar{
+                navbar.tintColor = categoryColor
+                navbar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor : categoryColor!]
+                title = selectedCategory!.name
+            }
+
+            
+            
+        }
+    }
     
     //MARK - Table View Data Source
     

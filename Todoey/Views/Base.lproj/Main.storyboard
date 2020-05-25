@@ -54,15 +54,18 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Ei0-Zx-23x" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="URz-BE-Opd">
-                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="URz-BE-Opd">
+                        <rect key="frame" x="0.0" y="44" width="414" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="barTintColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="barTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <textAttributes key="titleTextAttributes">
-                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         </textAttributes>
                     </navigationBar>
                     <nil name="viewControllers"/>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="gU3-d4-pW6">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
                     <connections>
                         <segue destination="OID-bZ-e1X" kind="relationship" relationship="rootViewController" id="OLf-Gb-2Yo"/>
                     </connections>
@@ -71,7 +74,7 @@
             </objects>
             <point key="canvasLocation" x="301" y="113"/>
         </scene>
-        <!--Category View Controller-->
+        <!--Category-->
         <scene sceneID="qXX-Vu-DIz">
             <objects>
                 <tableViewController id="OID-bZ-e1X" customClass="CategoryViewController" customModule="Todoey" customModuleProvider="target" sceneMemberID="viewController">
@@ -94,9 +97,9 @@
                             <outlet property="delegate" destination="OID-bZ-e1X" id="jKA-no-wlT"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="oHI-ic-9cD">
+                    <navigationItem key="navigationItem" title="Category" id="oHI-ic-9cD">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="K8Z-FW-NXJ">
-                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <connections>
                                 <action selector="addButtonPressed:" destination="OID-bZ-e1X" id="ZNf-Y8-n28"/>
                             </connections>
